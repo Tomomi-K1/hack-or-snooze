@@ -31,17 +31,23 @@
 </head>
 
 <body>
-
+  <i class="fa-solid fa-trash-can"></i>
 <!-- top navigation bar -->
 <nav>
   <div class="navbar-brand">
     <a class="nav-link" href="#" id="nav-all">Hack or Snooze</a>
   </div>
-  <div class="nav-right">
+  <div class="hidden nav-middle">
+        <a id="submit" href="#"><small>| submit</small></a>
+        <a id="favorites" href="#"><small>| favorites |</small></a>
+        <a id="my-stories" href="#"><small>my stories |</small></a>
+    </div>
+  <div class="nav-right"> 
+    <a class="hidden" id="submit" href="#"><small>Submit Story</small></a>
     <a class="nav-link" href="#" id="nav-login">login/signup</a>
     <a class="nav-link" href="#" id="nav-user-profile"></a>
     <a class="hidden" id="nav-logout" href="#"><small>(logout)</small></a>
-    <a class="hidden" id="submit" href="#"><small>Submit Story</small></a>
+   
 
   </div>
 </nav>
@@ -128,10 +134,11 @@
 <script src="https://unpkg.com/axios/dist/axios.js"></script>
 
 <script src="js/models.js"></script>
+<script src="js/stories.js"></script>
 <script src="js/main.js"></script>
 <script src="js/nav.js"></script>
 <script src="js/user.js"></script>
-<script src="js/stories.js"></script>
+
 
 </body>
 </html>

@@ -54,7 +54,7 @@ function putStoriesOnPage() {
 }
 
 async function addStoryAndAddToPage(evt){
-  evt.preventDefault;
+  evt.preventDefault();
   console.debug('addStoryAndAddToPage');
   
   const title = $('#title').val();
@@ -72,11 +72,12 @@ async function addStoryAndAddToPage(evt){
     {title, author, url});
 
   $storyForm.trigger("reset");
-
-  //why don't I need to append this to anywhere?
-  // it shows up on top of the list
-  const $story = generateStoryMarkup(story);
-  $allStoriesList.prepend($story);
-
-
+  
+  storyList.stories.unshift(story);
+  
+  putStoriesOnPage();
+  updateUIOnUserLogin();
+  
+    
 }
+

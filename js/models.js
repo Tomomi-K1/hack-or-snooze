@@ -82,26 +82,19 @@ class StoryList {
       });
 
       let {story} = response.data;
-      return new Story({
-        storyId: story.storyId,
-        title: story.title,
-        author: story.author,
-        url: story.url,
-        username: story.username,
-        createdAt: story.createdAt
-      })
-    
-    // UNIMPLEMENTED: complete this function!
+      return new Story(story);
   }
 
-  async removeStory({loginToken}, {storyId}) {
+  async removeStory({loginToken}, storyId) {
     const response = await axios({
       url: `${BASE_URL}/stories/${storyId}`,
       method: "DELETE",
-      data:{token:loginToken}});
+      data:{ token: loginToken }
+    });
 
-    }
-
+    console.log("removed story", response);
+  }
+  
 
 }
 
@@ -220,4 +213,31 @@ class User {
       return null;
     }
   }
+
+  async addToFav(storyId){
+    console.debug('addStoryToFav');
+    const response = await axios({
+    url: `${BASE_URL}/users/${this.username}/favorites/${storyId}`,
+    method: "POST",
+    data: { token: this.loginToken },
+    });
+    console.log("res to addStoryToFav", response);
+    let {user} = response.data;
+    currentUser.favorites = user.favorites;
+
+  }
+
+ async removeFromFav(storyId){
+    console.debug('removeStoryFromFav');
+    const response = await axios({
+    url: `${BASE_URL}/users/${this.username}/favorites/${storyId}`,
+    method: "DELETE",
+    data: { token: this.loginToken },
+    });
+    console.log("res to removeStoryFromFav", response);
+    let {user} = response.data;
+    currentUser.favorites = user.favorites;
+  }
+
 }
+

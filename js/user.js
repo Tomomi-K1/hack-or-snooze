@@ -116,7 +116,52 @@ function saveUserCredentialsInLocalStorage() {
 function updateUIOnUserLogin() {
   console.debug("updateUIOnUserLogin");
   hidePageComponents()
+  addStars('far');
+  addDeletebtn();
   $allStoriesList.show();
-
+  
   updateNavOnLogin();
+  
 }
+
+function addStars(className){
+   const $star = $(`<i class = "${className} fa-star"></i>`)
+  $('li').prepend($star);
+}
+
+function addDeletebtn(){
+  const $deleteBtn = $(`<i class="fas fa-trash-alt"></i>`);
+  $('li').prepend($deleteBtn);
+}
+
+$allStoriesList.on('click', '.fa-star', toggleFav);
+ 
+  
+ async function toggleFav(){
+    console.debug('toggleFav');
+
+      $(this).toggleClass('far fas')
+      let storyId = $(this).parents('li').attr('id');
+      console.log(storyId);
+      // let {...story} =storyList.stories.filter(story => story.storyId === storyId);
+      
+      if((this).classList.contains('fas')){
+        await currentUser.addToFav(storyId);
+        
+      } else {
+        await currentUser.removeFromFav(storyId);
+
+      }
+  }
+ 
+  $allStoriesList.on('click', '.fa-trash-alt', deleteStory);
+
+  async function deleteStory(){
+    let storyId = $(this).parents('li').attr('id');
+    await storyList.removeStory(currentUser, storyId);
+    console.log("removedStory");
+
+    $(this).parents('li').remove();
+
+
+  }

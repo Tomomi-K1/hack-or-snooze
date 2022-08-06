@@ -14,8 +14,11 @@ const $storyForm = $('#story-form')
 const $navLogin = $("#nav-login");
 const $navUserProfile = $("#nav-user-profile");
 const $navLogOut = $("#nav-logout");
+const $navMiddle = $(".nav-middle");
 const $submitStoryLink = $('#submit');
 const $postStoryBtn = $("#post-story-btn");
+const $favLink = $('#favorites');
+const $myStories = $('#my-stories');
 
 /** To make it easier for individual components to show just themselves, this
  * is a useful function that hides pretty much everything on the page. After
@@ -41,7 +44,11 @@ async function start() {
   await getAndShowStoriesOnStart();
 
   // if we got a logged-in user
-  if (currentUser) updateUIOnUserLogin();
+  if (currentUser) {
+    // addStars();
+    // addDeletebtn();
+    updateUIOnUserLogin();
+    }
 }
 
 // Once the DOM is entirely loaded, begin the app

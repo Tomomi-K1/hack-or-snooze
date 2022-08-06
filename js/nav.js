@@ -9,6 +9,7 @@
 function NavLinkToLoadStoriesOnPage(evt) {
   console.debug("NavLinkToLoadStoriesOnPage", evt);
   hidePageComponents();
+  start();
   putStoriesOnPage();
 }
 
@@ -21,7 +22,6 @@ function navLoginClick(evt) {
   hidePageComponents();
   $loginForm.show();
   $signupForm.show();
-  
 }
 
 $navLogin.on("click", navLoginClick);
@@ -34,11 +34,29 @@ function updateNavOnLogin() {
   $navLogin.hide();
   $navLogOut.show();
   $navUserProfile.text(`${currentUser.username}`).show();
-  $submitStoryLink.show();
+  $navMiddle.show();
 }
 
 $submitStoryLink.on('click', function(){
   $storyForm.show();
 });
 
-$postStoryBtn.on('submit', addStoryAndAddToPage);
+$postStoryBtn.on('click', addStoryAndAddToPage);
+
+$favLink.on('click', function(){
+
+  console.debug('favLinkClick');
+
+  $allStoriesList.empty();
+
+  for(let favStory of currentUser.favorites){
+    const $story = generateStoryMarkup(favStory);
+    $allStoriesList.append($story);
+  }
+  addStars('fas');
+   
+ console.log(currentUser.favorites);
+})
+
+ 
+

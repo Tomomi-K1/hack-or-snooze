@@ -17,6 +17,10 @@ nav {
   margin: 0 3px;
 }
 
+.nav-middle{
+  margin-left: 10px;
+}
+
 .nav-right {
   margin-left: auto;
   text-align: right;
