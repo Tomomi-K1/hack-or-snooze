@@ -9,11 +9,40 @@
 function NavLinkToLoadStoriesOnPage(evt) {
   console.debug("NavLinkToLoadStoriesOnPage", evt);
   hidePageComponents();
-  start();
   putStoriesOnPage();
 }
 
 $body.on("click", "#nav-all", NavLinkToLoadStoriesOnPage);
+
+/**Show Story submit form on licking story "submit" */
+function navSubmitStoryClick(evt){
+  console.debug(navSubmitStoryClick, evt);
+  hidePageComponents();
+  $allStoriesList.show();
+  $storyForm.show();
+}
+
+$submitStoryLink.on('click', navSubmitStoryClick);
+
+/**show Favorite stories on click on "favorites" */
+function navFavoritesclick(evt){
+  console.debug(navFavoritesclick, evt);
+  $favoritedStories.empty();
+  hidePageComponents();
+  putFavStoriesOnPage();
+}
+
+$body.on('click', "#favorites", navFavoritesclick);
+
+/**Show User's Own Stories on clicking "my stories" */
+function navMyStoriesclick(evt){
+  console.debug(navMyStoriesclick, evt);
+  $ownStories.empty();
+  hidePageComponents();
+  putUserStoriesOnPage();
+}
+
+$body.on('click', '#my-stories', navMyStoriesclick);
 
 /** Show login/signup on click on "login" */
 
@@ -26,6 +55,17 @@ function navLoginClick(evt) {
 
 $navLogin.on("click", navLoginClick);
 
+/**hide everything but profile on click "profile" */
+
+function navProfileClick(evt){
+  console.debug("navProfileClick", evt);
+  hidePageComponents();
+  $userProfile.show();
+}
+
+$navUserProfile.on('click', navProfileClick);
+
+
 /** When a user first logins in, update the navbar to reflect that. */
 
 function updateNavOnLogin() {
@@ -37,26 +77,13 @@ function updateNavOnLogin() {
   $navMiddle.show();
 }
 
-$submitStoryLink.on('click', function(){
-  $storyForm.show();
-});
 
-$postStoryBtn.on('click', addStoryAndAddToPage);
 
-$favLink.on('click', function(){
 
-  console.debug('favLinkClick');
 
-  $allStoriesList.empty();
 
-  for(let favStory of currentUser.favorites){
-    const $story = generateStoryMarkup(favStory);
-    $allStoriesList.append($story);
-  }
-  addStars('fas');
-   
- console.log(currentUser.favorites);
-})
 
- 
+
+
+
 

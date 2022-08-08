@@ -6,10 +6,13 @@ const $body = $("body");
 
 const $storiesLoadingMsg = $("#stories-loading-msg");
 const $allStoriesList = $("#all-stories-list");
+const $storiesList = $('.stories-list')
+const $favoritedStories = $('#favorited-stories');
+const $ownStories = $('#my-stories-list');
 
 const $loginForm = $("#login-form");
 const $signupForm = $("#signup-form");
-const $storyForm = $('#story-form')
+const $storyForm = $('#story-form');
 
 const $navLogin = $("#nav-login");
 const $navUserProfile = $("#nav-user-profile");
@@ -18,7 +21,9 @@ const $navMiddle = $(".nav-middle");
 const $submitStoryLink = $('#submit');
 const $postStoryBtn = $("#post-story-btn");
 const $favLink = $('#favorites');
-const $myStories = $('#my-stories');
+const $myStoriesLink = $('#my-stories');
+
+const $userProfile = $('#user-profile');
 
 /** To make it easier for individual components to show just themselves, this
  * is a useful function that hides pretty much everything on the page. After
@@ -27,9 +32,11 @@ const $myStories = $('#my-stories');
 
 function hidePageComponents() {
   const components = [
-    $allStoriesList,
+    $storiesList,
+    $storyForm,
     $loginForm,
     $signupForm,
+    $userProfile
   ];
   components.forEach(c => c.hide());
 }
@@ -44,11 +51,7 @@ async function start() {
   await getAndShowStoriesOnStart();
 
   // if we got a logged-in user
-  if (currentUser) {
-    // addStars();
-    // addDeletebtn();
-    updateUIOnUserLogin();
-    }
+  if (currentUser) updateUIOnUserLogin();
 }
 
 // Once the DOM is entirely loaded, begin the app

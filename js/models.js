@@ -27,6 +27,7 @@ class Story {
   getHostName() {
     const {hostname} = new URL(this.url);
     return hostname;
+    // return new URL(this.url).host;
   }
 }
 
@@ -52,7 +53,7 @@ class StoryList {
     // Note presence of `static` keyword: this indicates that getStories is
     //  **not** an instance method. Rather, it is a method that is called on the
     //  class directly. Why doesn't it make sense for getStories to be an
-    //  instance method? because this will create new StoryList.
+    //  instance method? because this will create original first StoryList.before this there is no instance of storyList created.
 
     // query the /stories endpoint (no auth required)
     const response = await axios({
@@ -74,27 +75,40 @@ class StoryList {
    * Returns the new Story instance
    */
 
-  async addStory({loginToken}, newStory) {
+  async addStory(user, newStory) {
+    //this addStory is created as the method of StoryList because we need to update this.stories
+    const token = user.loginToken;
     const response = await axios({
       url: `${BASE_URL}/stories`,
       method: "POST",
-      data: {token:loginToken, story: newStory},
+      data: {token, story: newStory},
       });
 
-      let {story} = response.data;
-      return new Story(story);
+      let story = new Story(response.data.story);
+      this.stories.unshift(story);
+      //adding newStory to this.stories(which equal to global Variable "storyList" because we will use this method lie this "storyList.addStory")
+      // console.log("this.stories", this.stories);
+      user.ownStories.unshift(story);
+      //also need to update the user's ownStories array.
+      
+      return story;
   }
 
-  async removeStory({loginToken}, storyId) {
+  async removeStory(user, storyId) {
+    const token = user.loginToken;
     const response = await axios({
       url: `${BASE_URL}/stories/${storyId}`,
       method: "DELETE",
-      data:{ token: loginToken }
+      data:{ token }
     });
+    
+    //filter out the story whose ID we are removing
+    this.stories = this.stories.filter(story => story.storyId !== storyId);
 
-    console.log("removed story", response);
+    //do the same thing for the user's list of stories & their favorites
+    user.ownStories = user.ownStories.filter(story => story.storyId !== storyId );
+    user.favrites = user.favorites.filter(story => story.storyId !== storyId);
   }
-  
 
 }
 
@@ -122,8 +136,11 @@ class User {
     this.createdAt = createdAt;
 
     // instantiate Story instances for the user's favorites and ownStories
+
+    //what happens if we don't do this? ==> if we do not do this this.favorite will have normal object, not the instance of story. since all stories pulled out from API is turned into the instance of story. It would be better to make all story object into instance of story.
     this.favorites = favorites.map(s => new Story(s));
     this.ownStories = ownStories.map(s => new Story(s));
+    
 
     // store the login token on the user so it's easy to find for API calls.
     this.loginToken = token;
@@ -214,30 +231,40 @@ class User {
     }
   }
 
-  async addToFav(storyId){
+  async addToFav(story){
     console.debug('addStoryToFav');
-    const response = await axios({
-    url: `${BASE_URL}/users/${this.username}/favorites/${storyId}`,
+    //update favorites of User instance
+    this.favorites.push(story);
+    
+    //add story to API database
+    await axios({
+    url: `${BASE_URL}/users/${this.username}/favorites/${story.storyId}`,
     method: "POST",
     data: { token: this.loginToken },
     });
-    console.log("res to addStoryToFav", response);
-    let {user} = response.data;
-    currentUser.favorites = user.favorites;
-
+   
   }
 
  async removeFromFav(storyId){
     console.debug('removeStoryFromFav');
-    const response = await axios({
+    //add to favorites of User instance
+    this.favorites = this.favorites.filter(s => s.storyId !== storyId);
+    
+    //remove from API data
+    await axios({
     url: `${BASE_URL}/users/${this.username}/favorites/${storyId}`,
     method: "DELETE",
     data: { token: this.loginToken },
     });
-    console.log("res to removeStoryFromFav", response);
-    let {user} = response.data;
-    currentUser.favorites = user.favorites;
+    console.log("removed story from fav")
+    
   }
+
+  
+  isFavorite(story){
+    return this.favorites.some(s=>(s.storyId === story.storyId));
+  }
+
 
 }
 

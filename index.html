@@ -31,7 +31,7 @@
 </head>
 
 <body>
-  <i class="fa-solid fa-trash-can"></i>
+  
 <!-- top navigation bar -->
 <nav>
   <div class="navbar-brand">
@@ -43,45 +43,45 @@
         <a id="my-stories" href="#"><small>my stories |</small></a>
     </div>
   <div class="nav-right"> 
-    <a class="hidden" id="submit" href="#"><small>Submit Story</small></a>
     <a class="nav-link" href="#" id="nav-login">login/signup</a>
     <a class="nav-link" href="#" id="nav-user-profile"></a>
     <a class="hidden" id="nav-logout" href="#"><small>(logout)</small></a>
-   
-
   </div>
 </nav>
 
-  <!-- Story form -->
-  <form
-      action="#"
-      id="story-form"
-      class="account-form hidden"
-      method="post">
+ <!-- area for stories (all stories, user stories, favorites) -->
+<section class="stories-container container">
+
+   <!-- Story form -->
+   <form action="#" id="story-form" class="hidden">
     <h4>New Story</h4>
     <div class="story-input">
       <label for="title">Title</label>
-      <input id="title">
+      <input id="title" required placeholder="story title">
     </div>
     <div class="story-input">
       <label for="author">Author</label>
-      <input id="author">
+      <input id="author" required placeholder="author name">
     </div>
     <div class="story-input">
       <label for="url">Story URL</label>
-      <input id="url">
+      <input id="url" required type="url" placeholder="story url" >
     </div>
     <button id="post-story-btn" type="submit">submit</button>
-  </form>
-
-<!-- area for stories (all stories, user stories, favorites) -->
-<section class="stories-container container">
+    <hr>
+</form>
 
   <!-- loading message (removed by JS after stories loaded) -->
   <div id="stories-loading-msg">Loading&hellip;</div>
 
   <!-- List of all stories -->
   <ol id="all-stories-list" class="stories-list"></ol>
+
+  <!-- List of stories favorited by the user -->
+  <ol id="favorited-stories" class="hidden stories-list"></ol>
+
+  <!-- List of stories by the user -->
+  <ol id="my-stories-list" class="hidden stories-list"></ol>
 
 </section>
 
@@ -126,18 +126,30 @@
   </form>
 </section>
 
+<section id="user-profile" class="hidden">
+  <div class="user-profile-box container">
+    <h4>User Profile Info</h4>
+  
+    <section>
+      <div>Name: <span id="profile-name" > Name:</span></div>
+      <div>Username: <span id="profile-username" >Username: </span></div>
+      <div>Account Created: <span id="profile-account-date" ></span></div>
+    </section>
 
+  </div>
 </section>
+
+
 
 <!-- Library JS & our JS -->
 <script src="https://unpkg.com/jquery"></script>
 <script src="https://unpkg.com/axios/dist/axios.js"></script>
 
 <script src="js/models.js"></script>
-<script src="js/stories.js"></script>
 <script src="js/main.js"></script>
 <script src="js/nav.js"></script>
 <script src="js/user.js"></script>
+<script src="js/stories.js"></script>
 
 
 </body>

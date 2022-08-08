@@ -19,6 +19,18 @@
 
 /* Individual stories */
 
+.fa-star,
+.fa-trash-alt {
+  font-size: 0.75rem;
+  margin: 0 2px;
+  cursor: pointer;
+}
+
+.fa-trash-alt:hover {
+  color: red;
+}
+
+
 .story-link {
   color: black;
   font-size: 0.85rem;
